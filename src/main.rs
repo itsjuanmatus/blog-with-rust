@@ -93,6 +93,8 @@ async fn new_post(pool: web::Data<DbPool>, item: web::Json<NewPostHandler>) -> i
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let port = env::var("PORT").expect("PORT must be set");
+    let port : u16 = port.parse().unwrap();
 
     let connection = ConnectionManager::<PgConnection>::new(db_url); // this handles the connection to the database
     let pool = Pool::builder()
@@ -109,7 +111,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .app_data(web::Data::new(tera))
     })
-    .bind(("0.0.0.0", 9900))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }
