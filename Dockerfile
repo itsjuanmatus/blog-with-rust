@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install \
     libssl-dev \
     build-essential \
     libpq-dev -y
-    
+
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install \
     libpq-dev -y
 WORKDIR /app
 
-COPY --from=0 /app/.env /app
 COPY --from=0 /app/target/release/blog-with-rust /app
 COPY /templates/ /app/templates
 
